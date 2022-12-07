@@ -1,5 +1,27 @@
-﻿<h3>PageArticleDetails</h3>
+﻿@page "/Article/{Id: int}"
+@using System.Net
+@using System.Net.Http.Headers
+@inject NavigationManager _Navigation;
+@inject HttpClient _HttpClient
+@using BlazorLeBonCoin.Services
+@inject LoginService _loginService;
+@inject NavigationManager _NavigationManager;
+@inject ArticleService _articleService;
+@using BlazorLeBonCoin.DTOs
+
+
+<h3>@articleGetById.Title</h3>
+
+
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
 
+    public ArticleResponseDTO? articleGetById { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        articleGetById = (ArticleResponseDTO?)await _articleService.GetById(Id);        
+    }
 }
