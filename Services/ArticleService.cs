@@ -17,7 +17,10 @@ namespace BlazorLeBonCoin.Services
             return (List<ArticleResponseDTO>?) await _httpClient.GetFromJsonAsync("/api/v1/Article", typeof(List<ArticleResponseDTO>));
         }
 
-
+        public async Task<ArticleResponseDTO?> GetById(int id)
+        {
+            return (ArticleResponseDTO?)await _httpClient.GetFromJsonAsync($"/api/v1/Article/{id}", typeof(ArticleResponseDTO));
+        }
 
     }
 }
