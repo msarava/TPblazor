@@ -5,9 +5,10 @@
     <div><img src=@article.Images[0].Url height="200" /></div>
     <div class="d-flex flex-column">
         <h1>@article.Title</h1>
-        <p><small>créé le: @article.Date</small></p>
+        <p><small>créé le: @article.Date.ToString("dd/mm")</small></p>
         <div><b>Prix:</b> @article.Price €</div>
-        <div>Nombre de commentaires: (@article.Comments.Count)</div>       
+        <div>Nombre de commentaires: (@article.Comments.Count)</div>    
+        <div>@article.CategoryId</div>
         <a href="article/@article.Id">More détails</a>
     </div>
     <div>

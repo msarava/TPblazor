@@ -6,6 +6,7 @@
 @inject NavigationManager _NavigationManager
 @inject NavigationManager _Navigation
 @inject ArticleService _articleService
+@inject HttpClient _httpClient
 
 <h1 class="text-center"><u>Le Bon Coin Toulouse</u></h1>
 
@@ -14,28 +15,33 @@
         <div class="row m-1 mt-5 border border-secondary rounded p-3">
             <div class="col-1">
                 <InputSelect style="height: 34px;" @bind-Value="Category">
-                    <option selected value=1>All</option>
+                    <option selected value=0>All</option>
                     <option value=1>House</option>
-                    <option value=1>Car</option>
-                    <option value=1>Fashion</option>
-                    <option value=1>Multimedia</option>
+                    <option value=2>Car</option>
+                    <option value=3>Fashion</option>
+                    <option value=4>Multimedia</option>
                 </InputSelect>
             </div>
             <div class="col-9">
                 <InputText class="p-1 form-control" @bind-Value="SearchText" placeholder="Search..."></InputText>
             </div>
             <button class="col-1 p-1 btn btn-secondary" type="submit">Search</button>
-        </div>  
+        </div>
     </EditForm>
     <div class="row m-1 mt-3 justify-content-center">
         <button class="col-6 p-1 btn btn-warning" @onclick=@Navigate>Add new article</button>
     </div>
-    
-    @if (ArticleData != null)
+
+    @if (ArticleData == null)
     {
-        @foreach (ArticleResponseDTO article in ArticleData)
+        <div>Loading ... </div>
+
+    }
+    else
+    {
+        @foreach (ArticleResponseDTO article in ArticleDataSearch)
         {
-            <ArticleListComponent article = "@article" ></ArticleListComponent>
+            <ArticleListComponent article="@article"></ArticleListComponent>
         }
     }
 
@@ -43,28 +49,38 @@
 
 @code {
     public List<ArticleResponseDTO>? ArticleData { get; set; }
-    public string Category { get; set; }
+    public List<ArticleResponseDTO>? ArticleDataSearch { get; set; }
+
+    public int Category { get; set; }
     public string SearchText { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        //    if (!_loginService.IsLogged)
-        //    {
-        //        _NavigationManager.NavigateTo("login");
-        //    }
-        //    else
-        //    {
-        //        _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
-        //        ArticleData = await _HttpClient.GetFromJsonAsync<List<ArticleResponseDTO>>("/article");
-        //        StateHasChanged();
-        //    }
+        if (!_loginService.IsLogged)
+        {
+            _NavigationManager.NavigateTo("login");
+        }
+        else
+        {
+            // _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
+            ArticleData = await _articleService.GetArticles();
+            ArticleDataSearch = ArticleData;
+            StateHasChanged();
+        }
 
-        ArticleData = await _articleService.GetArticles();
     }
 
-    public async void Search()
+    public void Search()
     {
-        
+        if (Category != 0)
+        {
+            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText) && article.CategoryId == Category);
+
+        }else{
+            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText));
+
+        }
+        StateHasChanged();
     }
 
     void Navigate()
