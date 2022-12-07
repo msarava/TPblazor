@@ -51,6 +51,7 @@
     public List<ArticleResponseDTO>? ArticleData { get; set; }
     public string Category { get; set; }
     public string SearchText { get; set; }
+<<<<<<< HEAD
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +67,21 @@
         //    }
 
         ArticleData = await _articleService.GetArticles();
+=======
+    
+    protected override void OnInitialized()
+    {
+        if (!_loginService.IsLogged)
+        {
+            _NavigationManager.NavigateTo("login");
+        }
+        /*else
+        {
+            _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
+            ArticleData = await _HttpClient.GetFromJsonAsync<List<ArticleResponseDTO>>("/article");
+            StateHasChanged();
+        }*/
+>>>>>>> 7e95f697acfc640f811a66edd14385812191e5b8
     }
 
     public async void Search()

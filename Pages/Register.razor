@@ -49,12 +49,12 @@
 
     public async void SubmitRegister()
     {
-        MultipartFormDataContent content = new MultipartFormDataContent();
-        content.Add(new StringContent(FirstName), "firstname");
-        content.Add(new StringContent(LastName), "lastname");
-        content.Add(new StringContent(Email), "email");
-        content.Add(new StringContent(Password), "password");
-        HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/api/v1/User", content);
+        UserRequestDto request = new UserRequestDto();
+        request.FirstName = FirstName;
+        request.LastName = LastName;
+        request.Email = Email;
+        request.Password = Password;
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/api/v1/User", request);
         
         _Navigation.NavigateTo("login");
     }
