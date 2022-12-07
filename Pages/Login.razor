@@ -41,7 +41,7 @@
         MultipartFormDataContent content = new MultipartFormDataContent();
         content.Add(new StringContent(Email), "email");
         content.Add(new StringContent(Password), "password");
-        HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/user/login", content);
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/api/v1/User/login", content);
         string token = await responseMessage.Content.ReadAsStringAsync();
         if (token != null)
         {

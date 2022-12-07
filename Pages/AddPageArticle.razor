@@ -58,24 +58,24 @@
     public int UserId { get; set; }
     public int ArticleId { get; set; }
 
-    /*protected override void OnInitialized()
-        {
+    protected override void OnInitialized()
+    {
         if (!_loginService.IsLogged)
             {
             _NavigationManager.NavigateTo("login");
+            }
     }
-    }*/
     public async void SubmitArticle()
     {
-        /*Date = DateTime.Now;
+        Date = DateTime.Now;
         decimal price = Convert.ToDecimal(Price);
 
-        ArticleRequestDTO requestDto = new ArticleRequestDTO() { Date = Date, CategoryId = Category, Title = Title, Description = Description, Price = price, UserId = UserId  };
-        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/pokemon", requestDto);
+        ArticleRequestDTO requestDto = new ArticleRequestDTO() { Date = Date, CategoryId = Category, Title = Title, Description = Description, Price = price };
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/api/v1/Article" + UserId, requestDto);
         ArticleResponseDTO responseDto = await responseMessage.Content.ReadFromJsonAsync<ArticleResponseDTO>();
         ArticleId = responseDto.Id;
         StateHasChanged();
-        */
+        
         _Navigation.NavigateTo("addpageimage/" + ArticleId);
     } 
 }
