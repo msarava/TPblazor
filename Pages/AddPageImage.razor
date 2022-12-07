@@ -7,20 +7,20 @@
 
 <div class="container">
     <h3><u>Add images</u></h3>
-    <EditForm Model="this" OnSubmit="SubmitImage">
+    <EditForm Model="this">
         
         <div class="row m-1 mt-4">
             <div class="col-6">
-                <InputFile OnChange="@FileChanged" multiple></InputFile>
+                <InputFile OnChange="@FileChanged"></InputFile>
             </div>
             <div>
                 @Result
             </div>
         </div>
               
-        <div class="row m-1 mt-2">
+        @*<div class="row m-1 mt-2">
             <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
-        </div>
+        </div>*@
 
     </EditForm>
 </div>
@@ -31,10 +31,10 @@
     public string Result { get; set; }
     //public int UserId { get; set; }
 
-    public async void SubmitImage()
-    {
+    /*public async void SubmitImage()
+        {
         _Navigation.NavigateTo("/article");
-    }
+    }*/
 
 
     public async void FileChanged(InputFileChangeEventArgs e)
@@ -46,12 +46,13 @@
             contentFile.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
             content.Add(new StreamContent(file.OpenReadStream()), "\"image\"", fileName: file.Name);
 
-            HttpResponseMessage response = await _HttpClient.PutAsync("/articleid/" + ArticleId + "/image", content);
+            HttpResponseMessage response = await _HttpClient.PutAsync("/api/v1/Article/" + ArticleId + "/image", content);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 Result = "Image envoyée";
                 StateHasChanged();
             }
         }
+        //_Navigation.NavigateTo("/article");
     }
 }

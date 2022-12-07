@@ -1,6 +1,7 @@
 namespace BlazorLeBonCoin.DTOs;
 
-public class ImageDto
+public class LoginDto
 {
-    public  string Url { get; set; }
+    public int Id { get; set; }
+    public  string Token { get; set; }
 }
