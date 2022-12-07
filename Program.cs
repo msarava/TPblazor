@@ -10,5 +10,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://api-leboncoin-toulouse.azurewebsites.net") });
 builder.Services.AddSingleton<LoginService>();
 builder.Services.AddScoped<ArticleService>();
+builder.Services.AddScoped<UserService>();
 
 await builder.Build().RunAsync();

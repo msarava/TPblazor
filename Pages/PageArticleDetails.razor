@@ -1,4 +1,4 @@
-﻿@page "/Article/{Id: int}"
+﻿@page "/Article/{id:int}"
 @using System.Net
 @using System.Net.Http.Headers
 @inject NavigationManager _Navigation;
@@ -6,12 +6,36 @@
 @using BlazorLeBonCoin.Services
 @inject LoginService _loginService;
 @inject NavigationManager _NavigationManager;
+@inject UserService _userService;
 @inject ArticleService _articleService;
 @using BlazorLeBonCoin.DTOs
 
 
-<h3>@articleGetById.Title</h3>
+<h3>@articleGetById?.Title</h3>
 
+<div class="d-flex justify-content-center">
+@foreach (ImageDto img in listImages)
+ {
+        <div class="m-2 border-2 image-component shadow-lg">
+       <img src="@img.Url" width="200px">
+   </div>
+ }
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="fw-bold">Prix : <span class="fw-normal">@articleGetById.Price</span></div>
+    <div>publié le : @articleGetById.Date.ToString("dd/MM/yyyy")</div>
+</div>
+
+<div class="d-flex justify-content-center fw-bold">Description : <span class="fw-normal">@articleGetById.Description</span></div>
+
+@foreach (CommentDto com in comment)
+{
+    <div class="d-flex justi-content-center">Commentaire : @com.Text</div>
+}
+
+
+<div>@articleGetById.Date.ToString("hh:mm")</div>
 
 
 @code {
@@ -19,9 +43,15 @@
     public int Id { get; set; }
 
     public ArticleResponseDTO? articleGetById { get; set; }
+    public List<ImageDto> listImages { get; set; } = new List<ImageDto>();
+    public List<CommentDto> comment { get; set; } = new List<CommentDto>();
+    public UserResponseDto? user { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        articleGetById = (ArticleResponseDTO?)await _articleService.GetById(Id);        
+        articleGetById = new();
+        articleGetById = (ArticleResponseDTO?)await _articleService.GetById(Id);
+        listImages = articleGetById.Images;
+        comment = articleGetById.Comments.ForEach(c => c.UserName = _userService.GetUserById(c.UserAppId))
     }
 }
