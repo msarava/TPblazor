@@ -4,6 +4,7 @@
 @inject LoginService _loginService;
 @inject NavigationManager _NavigationManager
 @inject NavigationManager _Navigation
+@inject ArticleService _articleService
 
 <h1 class="text-center"><u>Le Bon Coin Toulouse</u></h1>
 
@@ -38,7 +39,7 @@
                 <div>
                     @foreach (ImageDto img in article.Images)
                     {
-                        <img src="@img.Url" />
+                        <img src="@img.Url"  height="100"/>
                     }
                 </div>
             </div>
@@ -51,6 +52,23 @@
     public List<ArticleResponseDTO>? ArticleData { get; set; }
     public string Category { get; set; }
     public string SearchText { get; set; }
+<<<<<<< HEAD
+
+    protected override async Task OnInitializedAsync()
+    {
+        //    if (!_loginService.IsLogged)
+        //    {
+        //        _NavigationManager.NavigateTo("login");
+        //    }
+        //    else
+        //    {
+        //        _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
+        //        ArticleData = await _HttpClient.GetFromJsonAsync<List<ArticleResponseDTO>>("/article");
+        //        StateHasChanged();
+        //    }
+
+        ArticleData = await _articleService.GetArticles();
+=======
     
     protected override void OnInitialized()
     {
@@ -64,6 +82,7 @@
             ArticleData = await _HttpClient.GetFromJsonAsync<List<ArticleResponseDTO>>("/article");
             StateHasChanged();
         }*/
+>>>>>>> 7e95f697acfc640f811a66edd14385812191e5b8
     }
 
     public async void Search()
