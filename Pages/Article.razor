@@ -1,0 +1,77 @@
+﻿@page "/article"
+@using BlazorLeBonCoin.Services
+@using BlazorLeBonCoin.DTOs
+@inject LoginService _loginService;
+@inject NavigationManager _NavigationManager
+@inject NavigationManager _Navigation
+
+<h1 class="text-center"><u>Le Bon Coin Toulouse</u></h1>
+
+<div class="container">
+    <EditForm Model="this" OnSubmit="Search">
+        <div class="row m-1 mt-5 border border-secondary rounded p-3">
+            <div class="col-1">
+                <InputSelect style="height: 34px;" @bind-Value="Category">
+                    <option>All</option>
+                    <option>Cat 1</option>
+                    <option>Cat 2</option>
+                    <option>Cat 3</option>
+                </InputSelect>
+            </div>
+            <div class="col-9">
+                <InputText class="p-1 form-control" @bind-Value="SearchText" placeholder="Search..."></InputText>
+            </div>
+            <button class="col-1 p-1 btn btn-secondary" type="submit">Search</button>
+        </div>  
+    </EditForm>
+    <div class="row m-1 mt-3 justify-content-center">
+        <button class="col-6 p-1 btn btn-warning" @onclick=@Navigate>Add new article</button>
+    </div>
+    
+    @if (ArticleData != null)
+    {
+        @foreach (ArticleResponseDTO article in ArticleData)
+        {
+            <div>
+                @article.Title
+                <div>
+                    @foreach (ImageDto img in article.Images)
+                    {
+                        <img src="@img.Url" />
+                    }
+                </div>
+            </div>
+        }
+    }
+
+</div>
+
+@code {
+    public List<ArticleResponseDTO>? ArticleData { get; set; }
+    public string Category { get; set; }
+    public string SearchText { get; set; }
+    
+    /*protected override void OnInitialized()
+    {
+        if (!_loginService.IsLogged)
+        {
+            _NavigationManager.NavigateTo("login");
+        }
+        else
+        {
+            _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
+            ArticleData = await _HttpClient.GetFromJsonAsync<List<ArticleResponseDTO>>("/article");
+            StateHasChanged();
+        }
+    }*/
+
+    public async void Search()
+    {
+        
+    }
+
+    void Navigate()
+    {
+        _Navigation.NavigateTo("addpagearticle");
+    }
+}

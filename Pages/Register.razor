@@ -1,0 +1,61 @@
+﻿@page "/register"
+@using System.Diagnostics
+@inject NavigationManager _Navigation
+@inject HttpClient _HttpClient
+@using BlazorLeBonCoin.DTOs
+
+<div class="container">
+    <h3><u>Register</u></h3>
+    <EditForm Model="this" OnSubmit="SubmitRegister">
+        <div class="row m-1 mt-4">
+            <div class="col-6">
+                <InputText class="p-1 form-control" @bind-Value="FirstName" placeholder="First Name"></InputText>
+            </div>
+
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText class="p-1 form-control" @bind-Value="LastName" placeholder="Last Name"></InputText>
+            </div>
+
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText type="email" class="p-1 form-control" @bind-Value="Email" placeholder="Email"></InputText>
+            </div>
+
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText type="password" class="col-6 p-1 form-control" @bind-Value="Password" placeholder="Password"></InputText>
+            </div>
+
+        </div>
+
+        <div class="row m-1 mt-2">
+            <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+
+    public async void SubmitRegister()
+    {
+        MultipartFormDataContent content = new MultipartFormDataContent();
+        content.Add(new StringContent(FirstName), "firstname");
+        content.Add(new StringContent(LastName), "lastname");
+        content.Add(new StringContent(Email), "email");
+        content.Add(new StringContent(Password), "password");
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/api/v1/User", content);
+        
+        _Navigation.NavigateTo("login");
+    }
+}

@@ -1,0 +1,81 @@
+﻿@page "/addpagearticle"
+@using System.Net
+@using System.Net.Http.Headers
+@inject NavigationManager _Navigation;
+@inject HttpClient _HttpClient
+@using BlazorLeBonCoin.Services
+@inject LoginService _loginService;
+@inject NavigationManager _NavigationManager
+@using BlazorLeBonCoin.DTOs
+
+<div class="container">
+    <h3><u>Add new article</u></h3>
+    <EditForm Model="this" OnSubmit="SubmitArticle">
+        
+        <div class="row m-1 mt-4">
+            <div class="col-6 d-flex align-items-baseline">
+                <h5>Category :</h5>
+                <InputSelect style="height: 34px;" @bind-Value="Category">
+                    <option value=0>All</option>
+                    <option value=1>Cat 1</option>
+                    <option value=2>Cat 2</option>
+                    <option value=3>Cat 3</option>
+                </InputSelect>
+            </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText class="p-1 form-control" @bind-Value="Title" placeholder="Title"></InputText>
+            </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputTextArea  class="p-1 form-control" @bind-Value="Description" placeholder="Description"></InputTextArea>
+            </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText class="p-1 form-control" @bind-Value="Price" placeholder="Price"></InputText>
+            </div>
+
+        </div>
+     
+        <div class="row m-1 mt-2">
+            <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    public DateTime Date { get; set; }
+    public int Category { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string Price { get; set; }
+    public int UserId { get; set; }
+    public int ArticleId { get; set; }
+
+    /*protected override void OnInitialized()
+        {
+        if (!_loginService.IsLogged)
+            {
+            _NavigationManager.NavigateTo("login");
+    }
+    }*/
+    public async void SubmitArticle()
+    {
+        /*Date = DateTime.Now;
+        decimal price = Convert.ToDecimal(Price);
+
+        ArticleRequestDTO requestDto = new ArticleRequestDTO() { Date = Date, CategoryId = Category, Title = Title, Description = Description, Price = price, UserId = UserId  };
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/pokemon", requestDto);
+        ArticleResponseDTO responseDto = await responseMessage.Content.ReadFromJsonAsync<ArticleResponseDTO>();
+        ArticleId = responseDto.Id;
+        StateHasChanged();
+        */
+        _Navigation.NavigateTo("addpageimage/" + ArticleId);
+    } 
+}

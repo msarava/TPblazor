@@ -1,0 +1,57 @@
+﻿@page "/addpageimage/{ArticleId:int}"
+@using System.Net
+@using System.Net.Http.Headers
+@inject NavigationManager _NavigationManager;
+@inject NavigationManager _Navigation;
+@inject HttpClient _HttpClient
+
+<div class="container">
+    <h3><u>Add images</u></h3>
+    <EditForm Model="this" OnSubmit="SubmitImage">
+        
+        <div class="row m-1 mt-4">
+            <div class="col-6">
+                <InputFile OnChange="@FileChanged" multiple></InputFile>
+            </div>
+            <div>
+                @Result
+            </div>
+        </div>
+              
+        <div class="row m-1 mt-2">
+            <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int ArticleId { get; set; }
+    public string Result { get; set; }
+    //public int UserId { get; set; }
+
+    public async void SubmitImage()
+    {
+        _Navigation.NavigateTo("/article");
+    }
+
+
+    public async void FileChanged(InputFileChangeEventArgs e)
+    {
+        foreach (IBrowserFile file in e.GetMultipleFiles())
+        {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            HttpContent contentFile = new StreamContent(file.OpenReadStream());
+            contentFile.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+            content.Add(new StreamContent(file.OpenReadStream()), "\"image\"", fileName: file.Name);
+
+            HttpResponseMessage response = await _HttpClient.PutAsync("/articleid/" + ArticleId + "/image", content);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Result = "Image envoyée";
+                StateHasChanged();
+            }
+        }
+    }
+}

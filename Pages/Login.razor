@@ -1,0 +1,57 @@
+﻿@page "/login"
+@using BlazorLeBonCoin.Services
+@using System.Diagnostics
+@inject HttpClient _HttpClient
+@inject LoginService _LoginService
+@inject NavigationManager _Navigation
+
+<div class="container">
+    <h3 class="ml-5"><u>Login</u></h3>
+    <EditForm Model="this" OnSubmit="SubmitLogin">
+        <div class="row m-1 mt-4">
+            <div class="col-6">
+                <InputText class="p-1 form-control" @bind-Value="Email" placeholder="Email"></InputText>
+            </div>
+
+        </div>
+        <div class="row m-1">
+            <div class="col-6">
+                <InputText type="password" class="col-6 p-1 form-control" @bind-Value="Password" placeholder="Password"></InputText>
+            </div>
+
+        </div>
+        <div class="row m-1 mt-2">
+            <button class="col-6 p-1 btn btn-danger" type="submit">Valider</button>
+        </div>
+    </EditForm>
+    <h3 class="mt-5"><u>Create New Account</u></h3>
+    <div class="row m-1 mt-4">
+        <button class="col-6 p-1 btn btn-warning" @onclick=@Navigate>Create New Account</button>
+    </div>
+</div>
+
+
+
+@code {
+    public string Email { get; set; }
+    public string Password { get; set; }
+
+    public async void SubmitLogin()
+    {
+        MultipartFormDataContent content = new MultipartFormDataContent();
+        content.Add(new StringContent(Email), "email");
+        content.Add(new StringContent(Password), "password");
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/user/login", content);
+        string token = await responseMessage.Content.ReadAsStringAsync();
+        if (token != null)
+        {
+            _LoginService.IsLogged = true;
+            _LoginService.Token = token;
+            _Navigation.NavigateTo("");
+        }       
+    }
+    void Navigate()
+    {
+        _Navigation.NavigateTo("register");
+    }
+}
