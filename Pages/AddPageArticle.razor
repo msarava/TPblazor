@@ -16,10 +16,11 @@
             <div class="col-6 d-flex align-items-baseline">
                 <h5>Category :</h5>
                 <InputSelect style="height: 34px;" @bind-Value="Category">
-                    <option value=0>All</option>
-                    <option value=1>Cat 1</option>
-                    <option value=2>Cat 2</option>
-                    <option value=3>Cat 3</option>
+                    <option value=1 selected>All</option>
+                    <option value=1>House</option>
+                    <option value=1>Car</option>
+                    <option value=1>Fashion</option>
+                    <option value=1>Multimedia</option>
                 </InputSelect>
             </div>
         </div>
@@ -44,13 +45,13 @@
         </div>
      
         <div class="row m-1 mt-2">
-            <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
+            <button class="col-6 p-1 btn btn-primary" type="submit">Next Step -></button>
         </div>
     </EditForm>
 </div>
 
 @code {
-    public DateTime Date { get; set; }
+   
     public int Category { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
@@ -61,17 +62,17 @@
     protected override void OnInitialized()
     {
         if (!_loginService.IsLogged)
-            {
+        {
             _NavigationManager.NavigateTo("login");
-            }
+        }
     }
     public async void SubmitArticle()
     {
-        Date = DateTime.Now;
         decimal price = Convert.ToDecimal(Price);
+        UserId = _loginService.UserId;
 
-        ArticleRequestDTO requestDto = new ArticleRequestDTO() { Date = Date, CategoryId = Category, Title = Title, Description = Description, Price = price };
-        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/api/v1/Article" + UserId, requestDto);
+        ArticleRequestDTO requestDto = new ArticleRequestDTO() { CategoryId = Category, Title = Title, Description = Description, Price = price };
+        HttpResponseMessage responseMessage = await _HttpClient.PostAsJsonAsync("/api/v1/Article/" + UserId, requestDto);
         ArticleResponseDTO responseDto = await responseMessage.Content.ReadFromJsonAsync<ArticleResponseDTO>();
         ArticleId = responseDto.Id;
         StateHasChanged();

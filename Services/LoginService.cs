@@ -4,6 +4,7 @@ public class LoginService
 {
     public bool IsLogged { get; set; }
     public string Token { get; set; }
+    public int UserId { get; set; }
 
     public LoginService()
     {

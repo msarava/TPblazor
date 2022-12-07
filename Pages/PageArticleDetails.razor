@@ -52,6 +52,6 @@
         articleGetById = new();
         articleGetById = (ArticleResponseDTO?)await _articleService.GetById(Id);
         listImages = articleGetById.Images;
-        comment = articleGetById.Comments.ForEach(c => c.UserName = _userService.GetUserById(c.UserAppId))
+        comment = articleGetById.Comments;
     }
 }

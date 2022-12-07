@@ -2,8 +2,9 @@
 @using BlazorLeBonCoin.Services
 @using System.Diagnostics
 @inject HttpClient _HttpClient
-@inject LoginService _LoginService
+@inject LoginService _loginService
 @inject NavigationManager _Navigation
+@using BlazorLeBonCoin.DTOs
 
 <div class="container">
     <h3 class="ml-5"><u>Login</u></h3>
@@ -24,6 +25,12 @@
             <button class="col-6 p-1 btn btn-danger" type="submit">Valider</button>
         </div>
     </EditForm>
+
+    <div>
+        @IdUser
+    </div>
+
+
     <h3 class="mt-5"><u>Create New Account</u></h3>
     <div class="row m-1 mt-4">
         <button class="col-6 p-1 btn btn-warning" @onclick=@Navigate>Create New Account</button>
@@ -35,6 +42,8 @@
 @code {
     public string Email { get; set; }
     public string Password { get; set; }
+    public int IdUser { get; set; }
+
 
     public async void SubmitLogin()
     {
@@ -42,12 +51,18 @@
         content.Add(new StringContent(Email), "email");
         content.Add(new StringContent(Password), "password");
         HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/api/v1/User/login", content);
-        string token = await responseMessage.Content.ReadAsStringAsync();
-        if (token != null)
+        LoginDto loginData = await responseMessage.Content.ReadFromJsonAsync<LoginDto>();
+        string token = loginData.Token;
+        int userId = loginData.Id;
+
+        if (token != null && userId != 0)
         {
-            _LoginService.IsLogged = true;
-            _LoginService.Token = token;
-            _Navigation.NavigateTo("");
+            _loginService.IsLogged = true;
+            _loginService.Token = token;
+            _loginService.UserId = userId;
+            IdUser = _loginService.UserId;
+            StateHasChanged();
+            //_Navigation.NavigateTo("");
         }       
     }
     void Navigate()
