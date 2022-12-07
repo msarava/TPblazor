@@ -17,9 +17,10 @@
                 <h5>Category :</h5>
                 <InputSelect style="height: 34px;" @bind-Value="Category">
                     <option value=0>All</option>
-                    <option value=1>Cat 1</option>
-                    <option value=2>Cat 2</option>
-                    <option value=3>Cat 3</option>
+                    <option value=1>House</option>
+                    <option value=2>Car</option>
+                    <option value=3>Fashion</option>
+                    <option value=4>Multimedia</option>
                 </InputSelect>
             </div>
         </div>
@@ -44,7 +45,7 @@
         </div>
      
         <div class="row m-1 mt-2">
-            <button class="col-6 p-1 btn btn-primary" type="submit">Send</button>
+            <button class="col-6 p-1 btn btn-primary" type="submit">Next Step -></button>
         </div>
     </EditForm>
 </div>
@@ -62,7 +63,7 @@
     {
         if (!_loginService.IsLogged)
             {
-            _NavigationManager.NavigateTo("login");
+                _NavigationManager.NavigateTo("login");
             }
     }
     public async void SubmitArticle()

@@ -43,6 +43,7 @@
         content.Add(new StringContent(Password), "password");
         HttpResponseMessage responseMessage = await _HttpClient.PostAsync("/api/v1/User/login", content);
         string token = await responseMessage.Content.ReadAsStringAsync();
+
         if (token != null)
         {
             _LoginService.IsLogged = true;
