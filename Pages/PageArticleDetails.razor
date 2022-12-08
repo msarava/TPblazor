@@ -29,10 +29,19 @@
 
 <div class="d-flex justify-content-center fw-bold">Description : <span class="fw-normal">@articleGetById.Description</span></div>
 
-@foreach (CommentDto com in comment)
-{
-    <div class="d-flex justi-content-center">Commentaire : @com.Text</div>
-}
+<div>
+    <span>Commentaires :</span>
+    @foreach (CommentDto com in comment)
+    {
+        if (com.User != null)
+        {
+            <div class="d-flex justi-content-center shadow-lg"><p class="fw-bold">@com.User.LastName</p> : @com.Text</div>
+        }
+
+    }
+</div>
+
+
 
 
 <div>@articleGetById.Date.ToString("hh:mm")</div>
@@ -45,7 +54,6 @@
     public ArticleResponseDTO? articleGetById { get; set; }
     public List<ImageDto> listImages { get; set; } = new List<ImageDto>();
     public List<CommentDto> comment { get; set; } = new List<CommentDto>();
-    public UserResponseDto? user { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
