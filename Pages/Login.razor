@@ -26,11 +26,6 @@
         </div>
     </EditForm>
 
-    <div>
-        @IdUser
-    </div>
-
-
     <h3 class="mt-5"><u>Create New Account</u></h3>
     <div class="row m-1 mt-4">
         <button class="col-6 p-1 btn btn-warning" @onclick=@Navigate>Create New Account</button>
@@ -42,9 +37,7 @@
 @code {
     public string Email { get; set; }
     public string Password { get; set; }
-    public int IdUser { get; set; }
-
-
+ 
     public async void SubmitLogin()
     {
         MultipartFormDataContent content = new MultipartFormDataContent();
@@ -60,9 +53,9 @@
             _loginService.IsLogged = true;
             _loginService.Token = token;
             _loginService.UserId = userId;
-            IdUser = _loginService.UserId;
+            _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + _loginService.Token);
             StateHasChanged();
-            //_Navigation.NavigateTo("");
+            _Navigation.NavigateTo("");
         }       
     }
     void Navigate()
