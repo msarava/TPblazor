@@ -44,7 +44,7 @@
             MultipartFormDataContent content = new MultipartFormDataContent();
             HttpContent contentFile = new StreamContent(file.OpenReadStream());
             contentFile.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
-            content.Add(new StreamContent(file.OpenReadStream()), "\"image\"", fileName: file.Name);
+            content.Add(new StreamContent(file.OpenReadStream()), "\"img\"", fileName: file.Name);
 
             HttpResponseMessage response = await _HttpClient.PutAsync("/api/v1/Article/" + ArticleId + "/image", content);
             if (response.StatusCode == HttpStatusCode.OK)
