@@ -27,6 +27,7 @@
     </EditForm>
     <div>
         @LoginResult
+        @*@Status*@
     </div>
 
     <h3 class="mt-5"><u>Create New Account</u></h3>
@@ -41,6 +42,9 @@
     public string Email { get; set; }
     public string Password { get; set; }
     public string LoginResult { get; set; }
+    //public bool Status { get; set; }
+
+    
     public async void SubmitLogin()
     {
         MultipartFormDataContent content = new MultipartFormDataContent();
@@ -50,8 +54,11 @@
         LoginDto loginData = await responseMessage.Content.ReadFromJsonAsync<LoginDto>();
         string token = loginData.Token;
         int userId = loginData.Id;
+        bool userStatus = loginData.StatusUser;
+        //Status = userStatus;
+        //StateHasChanged();
 
-        if (token != null && userId != 0)
+        if (token != null && userId != 0 && userStatus == true)
         {
             _loginService.IsLogged = true;
             _loginService.Token = token;
