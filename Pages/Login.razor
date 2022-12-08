@@ -25,6 +25,9 @@
             <button class="col-6 p-1 btn btn-danger" type="submit">Valider</button>
         </div>
     </EditForm>
+    <div>
+        @LoginResult
+    </div>
 
     <h3 class="mt-5"><u>Create New Account</u></h3>
     <div class="row m-1 mt-4">
@@ -37,7 +40,7 @@
 @code {
     public string Email { get; set; }
     public string Password { get; set; }
- 
+    public string LoginResult { get; set; }
     public async void SubmitLogin()
     {
         MultipartFormDataContent content = new MultipartFormDataContent();
@@ -56,7 +59,13 @@
             _HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + _loginService.Token);
             StateHasChanged();
             _Navigation.NavigateTo("");
-        }       
+        }
+        else
+        {
+            LoginResult = "Erreur de Connexion, Veuillez recommencer!";
+            StateHasChanged();
+            //_Navigation.NavigateTo("");
+        }
     }
     void Navigate()
     {

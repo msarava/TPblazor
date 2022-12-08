@@ -1,6 +1,7 @@
 ﻿@using BlazorLeBonCoin.Services
 @inject NavigationManager _Navigation
 @inject LoginService _LoginService
+@inject HttpClient _HttpClient
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -48,8 +49,9 @@
     private void Disconnect()
     {
         _LoginService.IsLogged = false;
-        _LoginService.Token = "";
+        _LoginService.Token = null;
         _Navigation.NavigateTo("");
+        _HttpClient.DefaultRequestHeaders.Clear();
     }
 
 }
