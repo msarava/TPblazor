@@ -17,5 +17,6 @@ public class ArticleResponseDTO
     {
         Images = new List<ImageDto>();
         Comments = new List<CommentDto>();
+       
     }
 }
