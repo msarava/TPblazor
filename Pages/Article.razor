@@ -64,7 +64,7 @@
         {
             // _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+_loginService.Token);
             ArticleData = await _articleService.GetArticles();
-            ArticleDataSearch = ArticleData;
+            ArticleDataSearch = ArticleData.FindAll(art => art.StatusArticle == true);
             StateHasChanged();
         }
 
@@ -74,10 +74,10 @@
     {
         if (Category != 0)
         {
-            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText) && article.CategoryId == Category);
+            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText) && article.CategoryId == Category && article.StatusArticle == true);
 
         }else{
-            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText));
+            ArticleDataSearch = ArticleData.FindAll(article => article.Title.Contains(SearchText) && article.StatusArticle == true);
 
         }
         StateHasChanged();
