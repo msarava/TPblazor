@@ -10,7 +10,7 @@ public class ArticleResponseDTO
     public string Title { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public bool Status { get; set; }
+    public bool StatusArticle { get; set; }
     public List<ImageDto> Images { get; set; }
     public List<CommentDto> Comments { get; set; }
     public ArticleResponseDTO()

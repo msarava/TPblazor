@@ -7,7 +7,8 @@
         <h1>@article.Title</h1>
         <p><small>créé le: @article.Date.ToString("dd/mm")</small></p>
         <div><b>Prix:</b> @article.Price €</div>
-        <div>Nombre de commentaires: (@article.Comments.Count)</div>    
+        <div>Nombre de commentaires: (@article.Comments.Count)</div>  
+        <div>statut : @article.StatusArticle</div>
         <div>@article.CategoryId</div>
         <a href="article/@article.Id">More détails</a>
     </div>
